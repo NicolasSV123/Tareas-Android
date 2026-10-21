@@ -22,7 +22,7 @@ class TaskDAO(val context: Context) {
         // Gets the data repository in write mode
         open()
 
-// Create a new map of values, where column names are the keys
+        // Create a new map of values, where column names are the keys
         val values = ContentValues()
         values.put(Task.COLUMN_NAME_TITLE, task.title)
         values.put(Task.COLUMN_NAME_DONE, task.done)
