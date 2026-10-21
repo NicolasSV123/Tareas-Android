@@ -28,9 +28,9 @@ class TaskDAO(val context: Context) {
         values.put(Task.COLUMN_NAME_DONE, task.done)
 
         try {
-            // Update the row
+            // Insert the row
             val newRowId = db.insertOrThrow(Task.TABLE_NAME, null, values)
-            Log.i("DATABASE", "Inserted row inserted with ID: $newRowId ")
+            Log.i("DATABASE", "Inserted row inserted with ID: $newRowId in ${Task.TABLE_NAME}")
         } catch (e: Exception) {
             Log.e("DATABASE", e.localizedMessage, e)
         } finally {
@@ -42,6 +42,28 @@ class TaskDAO(val context: Context) {
 
     fun update(task: Task){
 
+        // Gets the data repository in write mode
+        open()
+
+        // Create a new map of values, where column names are the keys
+        val values = ContentValues()
+        values.put(Task.COLUMN_NAME_TITLE, task.title)
+        values.put(Task.COLUMN_NAME_DONE, task.done)
+
+        try {
+            // Update the row
+            val updateRows = db.update(
+                Task.TABLE_NAME,
+                values,
+                "${Task.COLUMN_NAME_ID} = ${task.id}",
+                null
+            )
+            Log.i("DATABASE", "Update a row inserted with ID: ${task.id} in ${Task.TABLE_NAME}")
+        } catch (e: Exception) {
+            Log.e("DATABASE", e.localizedMessage, e)
+        } finally {
+            close()
+        }
     }
 
     fun delete(task: Task){
@@ -49,7 +71,15 @@ class TaskDAO(val context: Context) {
     }
 
     fun delete(id: Int){
-        db.delete(Task.TABLE_NAME, "${Task.COLUMN_NAME_ID} = $id", null)
+        open()
+        try {
+        val deleteRows = db.delete(Task.TABLE_NAME, "${Task.COLUMN_NAME_ID} = $id", null)
+            Log.i("DATABASE", "Deleted a row inserted with ID: $id in ${Task.TABLE_NAME}")
+        } catch (e: Exception) {
+            Log.e("DATABASE", e.localizedMessage, e)
+        } finally {
+            close()
+        }
     }
 
     fun findById(id: Int): Task?{
@@ -59,5 +89,4 @@ class TaskDAO(val context: Context) {
     fun findAll(): List<Task>{
 
     }
-
 }

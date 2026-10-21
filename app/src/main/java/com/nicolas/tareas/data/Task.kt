@@ -12,16 +12,12 @@ data class Task (
         const val COLUMN_NAME_DONE      = "done"
 
         const val SQL_CREATE_TABLE =
-            "CREATE TABLE ${Task.TABLE_NAME} ("+
+            "CREATE TABLE $TABLE_NAME ("+
                 "$COLUMN_NAME_ID INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "$COLUMN_NAME_TITLE TEXT,"+
                 "$COLUMN_NAME_DONE BOOLEAN)"
 
-        private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${Task.TABLE_NAME}"
-    }
-
-    object SQL_DROP_TABLE {
-
+        const val SQL_DROP_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME"
     }
 }
 
